@@ -2,7 +2,7 @@
 
 ## 0.1.1 (2026-02-22)
 
-- add `storeRawResponse` direct function to `@systemoperator/gateway/r2` for backward compatibility
+- add `storeRawResponse` to `@systemoperator/gateway/r2` for direct R2 storage without ApiGateway class
 
 ## 0.1.0 (2026-02-22)
 
