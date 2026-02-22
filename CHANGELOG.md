@@ -1,5 +1,9 @@
 # changelog
 
+## 0.1.1 (2026-02-22)
+
+- add `storeRawResponse` direct function to `@systemoperator/gateway/r2` for backward compatibility
+
 ## 0.1.0 (2026-02-22)
 
 - initial release

@@ -16,17 +16,30 @@ export interface R2BucketLike {
 export function createR2ResponseStore(bucket: R2BucketLike): ResponseStore {
   return {
     async store(gatewayName: string, reqId: string, data: unknown): Promise<string | undefined> {
-      const now = new Date();
-      const year = now.getUTCFullYear();
-      const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-      const day = String(now.getUTCDate()).padStart(2, '0');
-      const key = `${gatewayName}/${year}/${month}/${day}/${reqId}.json`;
-
-      await bucket.put(key, JSON.stringify(data), {
-        httpMetadata: { contentType: 'application/json' },
-      });
-
-      return key;
+      return storeRawResponse(bucket, gatewayName, reqId, data);
     },
   };
+}
+
+/**
+ * Store raw API response in R2 bucket.
+ * Uses date-based path: {gateway}/{year}/{month}/{day}/{reqId}.json
+ */
+export async function storeRawResponse(
+  r2: R2BucketLike,
+  gateway: string,
+  reqId: string,
+  data: unknown,
+): Promise<string> {
+  const now = new Date();
+  const year = now.getUTCFullYear();
+  const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(now.getUTCDate()).padStart(2, '0');
+  const key = `${gateway}/${year}/${month}/${day}/${reqId}.json`;
+
+  await r2.put(key, JSON.stringify(data), {
+    httpMetadata: { contentType: 'application/json' },
+  });
+
+  return key;
 }
